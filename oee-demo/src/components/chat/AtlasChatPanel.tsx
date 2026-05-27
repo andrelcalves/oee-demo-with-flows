@@ -7,10 +7,17 @@ type AtlasChatPanelProps = {
   isOpen: boolean;
   onClose: () => void;
   onReset?: () => void;
+  subtitle?: string;
   children: ReactNode;
 };
 
-export function AtlasChatPanel({ isOpen, onClose, onReset, children }: AtlasChatPanelProps) {
+export function AtlasChatPanel({
+  isOpen,
+  onClose,
+  onReset,
+  subtitle = 'Ask about OEE data',
+  children,
+}: AtlasChatPanelProps) {
   return (
     <aside
       role="dialog"
@@ -40,7 +47,7 @@ export function AtlasChatPanel({ isOpen, onClose, onReset, children }: AtlasChat
           </span>
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold">Atlas</span>
-            <span className="text-[11px] text-muted-foreground">Ask about OEE data</span>
+            <span className="text-[11px] text-muted-foreground">{subtitle}</span>
           </div>
         </div>
         <div className="flex items-center gap-1">

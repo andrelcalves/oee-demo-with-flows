@@ -9,6 +9,7 @@ import {
 import { AtlasChatPanel } from '@/components/chat/AtlasChatPanel';
 import { isAtlasConfigured } from '@/config/atlas';
 import {
+  ATLAS_CHAT_SUGGESTIONS,
   useAtlasChatViewModel,
   type UseAtlasChatViewModelDeps,
 } from '@/chat/useAtlasChatViewModel';
@@ -18,18 +19,53 @@ export type AtlasChatShellProps = {
   viewModelDeps?: UseAtlasChatViewModelDeps;
 };
 
+const PREVIEW_WELCOME_MESSAGE: ChatMessageVm = {
+  id: 'atlas-preview-welcome',
+  role: 'assistant',
+  text:
+    'Atlas AI will answer questions about overall OEE, equipment health, production trends, and production losses for this nitric-acid plant. Set VITE_ATLAS_AGENT_EXTERNAL_ID in .env to enable live chat.',
+};
+
 /**
  * Shell entry point.
  *
- * Renders nothing when `VITE_ATLAS_AGENT_EXTERNAL_ID` is empty — that keeps
- * local dev and the unit tests free of an Atlas dependency. Once the env var
- * is set, the inner `AtlasBackedShell` mounts the FAB and the slide-over.
+ * Always renders the chat FAB. When Atlas is not configured, shows a preview
+ * panel with static copy and a disabled input for demos.
  */
 export function AtlasChatShell({ viewModelDeps }: AtlasChatShellProps = {}) {
-  if (!isAtlasConfigured()) {
-    return null;
+  if (isAtlasConfigured()) {
+    return <AtlasBackedShell viewModelDeps={viewModelDeps} />;
   }
-  return <AtlasBackedShell viewModelDeps={viewModelDeps} />;
+  return <AtlasPreviewShell />;
+}
+
+function AtlasPreviewShell() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <AtlasChatPanel
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        subtitle="Preview — connect Atlas to chat"
+      >
+        <AtlasChatMessageList
+          messages={[PREVIEW_WELCOME_MESSAGE]}
+          suggestions={ATLAS_CHAT_SUGGESTIONS}
+          suggestionsDisabled
+        />
+        <AtlasChatInput
+          onSend={() => undefined}
+          disabled
+          placeholder="Configure Atlas to enable chat"
+        />
+      </AtlasChatPanel>
+      <AtlasChatFab
+        isOpen={isOpen}
+        onToggle={() => setIsOpen((value) => !value)}
+      />
+    </>
+  );
 }
 
 function AtlasBackedShell({ viewModelDeps }: AtlasChatShellProps) {

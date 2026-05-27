@@ -25,9 +25,9 @@ npm run build    # type-check + production build
 
 ## Atlas AI chat configuration
 
-The floating chat button (FAB) is **only rendered when an Atlas agent is
-configured** — otherwise the app runs without it and the unit tests pass with
-no extra setup. To enable the assistant:
+The floating chat button (FAB) is **always visible**. Without configuration it
+opens a **preview panel** (static copy, disabled input) so you can demo the
+planned Atlas integration. To enable **live** chat:
 
 1. Create or reuse a CDF Atlas agent in the same project you authenticate into
    via Fusion. Scope its system prompt to nitric‑acid OEE monitoring
@@ -40,8 +40,8 @@ no extra setup. To enable the assistant:
 
 3. Restart the dev server (Vite only picks up `.env` at startup).
 
-That's it — the lime FAB appears on every OEE page (dashboard, equipment list,
-equipment details), the panel streams answers, and the agent automatically
+That's it — on every OEE page (dashboard, equipment list, equipment details) the
+panel streams live answers, and the agent automatically
 receives the current `page` / `areaName` / `equipmentType` / `equipmentId` as
 context so references like "this equipment" resolve correctly.
 
@@ -67,8 +67,8 @@ vendored Atlas client in [`src/atlas-agent/`](src/atlas-agent/), and the UI in
 
 ### Troubleshooting
 
-- **No chat button?** `VITE_ATLAS_AGENT_EXTERNAL_ID` is empty in your `.env`,
-  or you forgot to restart `npm run dev` after editing `.env`.
+- **Preview only (no live answers)?** `VITE_ATLAS_AGENT_EXTERNAL_ID` is empty —
+  set it in `.env` and restart `npm run dev`. The FAB still appears in preview mode.
 - **`Agent chat API error: 401/403`** — the agent external id is wrong, or the
   agent lives in a different CDF project than the Fusion session you're in.
 - **Tools never fire** — confirm the agent's system prompt encourages tool use;

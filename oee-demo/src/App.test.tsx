@@ -67,11 +67,9 @@ describe('App', () => {
     expect(screen.getByText('54%')).toBeInTheDocument();
   });
 
-  it('hides the Atlas chat FAB when VITE_ATLAS_AGENT_EXTERNAL_ID is empty', async () => {
+  it('shows the Atlas chat FAB in preview mode when VITE_ATLAS_AGENT_EXTERNAL_ID is empty', async () => {
     renderApp(<App deps={makeConnectedDeps()} />);
     await waitFor(() => expect(screen.getByText('OEE MONITOR')).toBeInTheDocument());
-    expect(
-      screen.queryByRole('button', { name: /Atlas chat/i }),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /open atlas chat/i })).toBeInTheDocument();
   });
 });

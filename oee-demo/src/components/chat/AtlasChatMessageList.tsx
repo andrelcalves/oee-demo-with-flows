@@ -12,6 +12,7 @@ export type ChatMessageVm = {
 type AtlasChatMessageListProps = {
   messages: ChatMessageVm[];
   suggestions?: readonly string[];
+  suggestionsDisabled?: boolean;
   progress?: string | null;
   error?: string | null;
   onSuggestionClick?: (text: string) => void;
@@ -20,6 +21,7 @@ type AtlasChatMessageListProps = {
 export function AtlasChatMessageList({
   messages,
   suggestions,
+  suggestionsDisabled = false,
   progress,
   error,
   onSuggestionClick,
@@ -110,8 +112,10 @@ export function AtlasChatMessageList({
               <li key={suggestion}>
                 <button
                   type="button"
+                  disabled={suggestionsDisabled}
+                  aria-disabled={suggestionsDisabled}
                   onClick={() => onSuggestionClick?.(suggestion)}
-                  className="w-full rounded-lg px-3 py-2 text-left text-xs transition-colors hover:bg-muted/60"
+                  className="w-full rounded-lg px-3 py-2 text-left text-xs transition-colors hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-60"
                   style={{ border: '1px solid var(--oee-card-border)' }}
                 >
                   {suggestion}
