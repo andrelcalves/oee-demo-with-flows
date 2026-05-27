@@ -371,18 +371,18 @@ export const MOCK_AREA_PRODUCTION_RATES: AreaMetric[] = [
 export const MOCK_AREA_PERFORMANCE: AreaMetric[] = MOCK_AREA_PRODUCTION_RATES;
 
 export const MOCK_QUALITY_TREND: QualityTrendPoint[] = [
-  { timestamp: '2026-05-26T08:00:00Z', concentration: 59.2, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T09:00:00Z', concentration: 59.8, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T10:00:00Z', concentration: 60.1, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T11:00:00Z', concentration: 59.5, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T12:00:00Z', concentration: 60.4, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T13:00:00Z', concentration: 59.9, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T14:00:00Z', concentration: 60.2, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T15:00:00Z', concentration: 59.7, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T16:00:00Z', concentration: 60.0, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T17:00:00Z', concentration: 59.6, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T18:00:00Z', concentration: 60.3, hiHiLimit: 62, loLoLimit: 57 },
-  { timestamp: '2026-05-26T19:00:00Z', concentration: 59.9, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T08:00:00Z', concentration: 57.2, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T09:00:00Z', concentration: 57.5, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T10:00:00Z', concentration: 57.1, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T11:00:00Z', concentration: 57.8, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T12:00:00Z', concentration: 61.2, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T13:00:00Z', concentration: 59.6, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T14:00:00Z', concentration: 59.7, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T15:00:00Z', concentration: 58.9, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T16:00:00Z', concentration: 59.5, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T17:00:00Z', concentration: 58.4, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T18:00:00Z', concentration: 58.3, hiHiLimit: 62, loLoLimit: 57 },
+  { timestamp: '2026-05-26T19:00:00Z', concentration: 58.2, hiHiLimit: 62, loLoLimit: 57 },
 ];
 
 export const MOCK_AREA_QUALITY: AreaMetric[] = [

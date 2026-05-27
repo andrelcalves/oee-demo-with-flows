@@ -30,3 +30,9 @@ export function formatChartDate(isoTimestamp: string): string {
   const date = new Date(isoTimestamp);
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
+
+export function formatChartHour(isoTimestamp: string): string {
+  const date = new Date(isoTimestamp);
+  const hours = date.getUTCHours().toString().padStart(2, '0');
+  return `${hours}:00`;
+}
