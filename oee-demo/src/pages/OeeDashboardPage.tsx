@@ -6,6 +6,7 @@ import { DailyStatusBar } from '@/components/oee/DailyStatusBar';
 import { KpiGaugeCard } from '@/components/oee/KpiGaugeCard';
 import { LossBar } from '@/components/oee/LossBar';
 import { LossKpiCard } from '@/components/oee/LossKpiCard';
+import { OeeCard } from '@/components/oee/OeeCard';
 import { OeePageHeader } from '@/components/oee/OeePageHeader';
 import { PerformanceTopMetrics } from '@/components/oee/PerformanceTopMetrics';
 import { ProductionTrendChart } from '@/components/oee/ProductionTrendChart';
@@ -60,8 +61,14 @@ export function OeeDashboardPage() {
 
       <section className="grid gap-3 xl:grid-cols-3">
         <div className="flex flex-col gap-3">
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
-            <h2 className={SECTION_TITLE}>Availability &amp; Health</h2>
+          <OeeCard>
+            <h2 className={SECTION_TITLE}>
+              <span className="border-b-2 border-[var(--oee-purple-500)] pb-0.5">
+                Availability
+              </span>
+              {' '}
+              &amp; Health
+            </h2>
             <div className="mt-3">
               <AreaHealthPanel
                 sections={vm.areaSections}
@@ -70,15 +77,15 @@ export function OeeDashboardPage() {
                 }}
               />
             </div>
-          </div>
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          </OeeCard>
+          <OeeCard>
             <p className="mb-3 text-xs font-medium text-muted-foreground">Monthly Production Loss</p>
             <LossBar losses={vm.availabilityLosses} />
-          </div>
+          </OeeCard>
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          <OeeCard>
             <h2 className={SECTION_TITLE}>Performance</h2>
             <div className="mt-3 flex flex-col gap-3">
               <PerformanceTopMetrics
@@ -88,33 +95,33 @@ export function OeeDashboardPage() {
               />
               <ProductionTrendChart data={vm.productionTrend} />
             </div>
-          </div>
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          </OeeCard>
+          <OeeCard>
             <p className="mb-3 text-xs font-medium">Production Rate by Area</p>
             <AreaMetricsRow metrics={vm.areaProductionRates} />
-          </div>
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          </OeeCard>
+          <OeeCard>
             <p className="mb-3 text-xs font-medium text-muted-foreground">Monthly Production Loss</p>
             <LossBar losses={vm.performanceLosses} />
-          </div>
+          </OeeCard>
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          <OeeCard>
             <h2 className={SECTION_TITLE}>Quality</h2>
             <div className="mt-3 flex flex-col gap-3">
               <p className="text-[11px] font-medium">Final Concentration of Nitric Acid</p>
               <QualityTrendChart data={vm.qualityTrend} />
             </div>
-          </div>
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          </OeeCard>
+          <OeeCard>
             <p className="mb-3 text-xs font-medium">Quality Parameters per Area</p>
             <AreaMetricsRow metrics={vm.areaQuality} />
-          </div>
-          <div className="rounded-2xl bg-card p-4 shadow-sm">
+          </OeeCard>
+          <OeeCard>
             <p className="mb-3 text-xs font-medium text-muted-foreground">Monthly Production Loss</p>
             <LossBar losses={vm.qualityLosses} />
-          </div>
+          </OeeCard>
         </div>
       </section>
     </div>

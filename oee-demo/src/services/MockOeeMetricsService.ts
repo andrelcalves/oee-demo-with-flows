@@ -8,6 +8,7 @@ import {
   MOCK_PRODUCTION_LOSSES,
   MOCK_PRODUCTION_TREND,
   MOCK_QUALITY_TREND,
+  buildEquipmentDetail,
   MOCK_TURBINE_1_DETAIL,
 } from '@/data/mock-oee-data';
 import type { LossSection } from '@/types/oee';
@@ -71,21 +72,6 @@ export class MockOeeMetricsService implements OeeMetricsService {
     if (!equipment) {
       return Promise.resolve(undefined);
     }
-    return Promise.resolve({
-      equipment,
-      kpis: {
-        operatingTimeDays: equipment.operatingTimeDays,
-        mtbfDays: equipment.mtbfDays,
-        availability: equipment.availability,
-        daysSinceLastFailure: equipment.daysSinceLastFailure,
-        lastFailureDate: '—',
-        mttrDays: 0,
-        failureRatePerMonth: 0,
-        failureProbability30Days: 0,
-        overallHealth: equipment.overallHealth,
-      },
-      sensorCharts: [],
-      diagnostics: [],
-    });
+    return Promise.resolve(buildEquipmentDetail(equipment));
   }
 }

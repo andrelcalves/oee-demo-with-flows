@@ -1,3 +1,4 @@
+import { OeeCard } from '@/components/oee/OeeCard';
 import { OeeGauge } from '@/components/oee/OeeGauge';
 
 type GaugeVariant = 'hero' | 'availability' | 'performance' | 'quality';
@@ -13,10 +14,16 @@ export function KpiGaugeCard({ title, value, variant }: KpiGaugeCardProps) {
   const titleSize = isHero ? 'text-base font-medium' : 'text-sm font-medium';
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-card p-4 shadow-sm">
+    <OeeCard className="flex flex-col items-center justify-center gap-1 py-3">
       {isHero ? <p className={titleSize}>{title}</p> : null}
-      <OeeGauge value={value} variant={variant} size={isHero ? 'lg' : 'md'} ariaLabel={title} />
+      <OeeGauge
+        value={value}
+        variant={variant}
+        size={isHero ? 'lg' : 'md'}
+        arc={isHero ? 'semicircle' : 'full'}
+        ariaLabel={title}
+      />
       {isHero ? null : <p className={titleSize}>{title}</p>}
-    </div>
+    </OeeCard>
   );
 }

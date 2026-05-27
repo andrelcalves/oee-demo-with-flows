@@ -77,6 +77,21 @@ US3 can run after Phase 2
 - [x] T033 Align EquipmentDetailsPage with design/Turbine 1 prototypes
 - [x] T034 Update tests and verify build
 
+## Phase 9: Atlas AI chat integration (FR-031–FR-037, AC-009–AC-011)
+
+**Goal**: In-app Atlas chat answers OEE questions using existing service data
+**Independent Test**: FAB hidden when env unset; tools return mock-data summaries when invoked
+
+- [x] T040 [P] Chat UI shell (FAB, slide-over panel, message list, auto-resizing input) in `src/components/chat/`
+- [x] T041 Vendor atlas-agent (`types.ts`, `validation.ts`, `client.ts`, `python.ts`, `session.ts`, `react.ts`) into `src/atlas-agent/` and install `@sinclair/typebox`, `ajv`, `ajv-formats`
+- [x] T042 Add `src/config/atlas.ts` reading `VITE_ATLAS_AGENT_EXTERNAL_ID`, plus `.env.example` and `src/vite-env.d.ts` typings
+- [x] T043 Implement OEE Atlas tools (`get_oee_dashboard`, `get_availability_health`, `get_production_losses`, `get_production_trends`, `get_quality_metrics`, `get_equipment_list`, `get_equipment_detail`) in `src/chat/tools/`
+- [x] T044 Implement `useAtlasChatViewModel` wiring `useCogniteSdk`, `useOeeMetricsService`, `useAppState`, tools, welcome message, suggestions, and `getAppContext`
+- [x] T045 Wire `AtlasChatShell` to the view model, hide FAB when agent ID unset, expose `progress`/`error` in the message list
+- [x] T046 Update `spec.md` (FR-031–FR-037, AC-009–AC-011) and this file
+- [x] T047 Add unit tests for `createOeeAtlasTools` and `useAtlasChatViewModel`; keep `App.test.tsx` green when env is unset
+- [x] T048 Run `npm test` and `npm run build`; fix failures
+
 ## MVP scope
 
-Phases 1–3 (through T018) deliver AC-001–AC-005. Phase 7 aligns UI to `design/` prototypes.
+Phases 1–3 (through T018) deliver AC-001–AC-005. Phase 7 aligns UI to `design/` prototypes. Phase 9 adds the Atlas chat assistant (FR-031–FR-037, AC-009–AC-011).

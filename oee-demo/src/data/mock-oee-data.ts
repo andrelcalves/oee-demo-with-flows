@@ -2,12 +2,15 @@ import type {
   AreaMetric,
   AreaSection,
   DashboardKpis,
+  DiagnosticCard,
   Equipment,
   EquipmentDetail,
+  EquipmentDetailKpis,
   MonthlyLossBreakdown,
   ProductionLoss,
   ProductionTrendPoint,
   QualityTrendPoint,
+  SensorChart,
 } from '@/types/oee';
 
 export const MOCK_DASHBOARD_KPIS: DashboardKpis = {
@@ -139,6 +142,128 @@ function sensorData(values: number[], baseline: number) {
     value: values[index] ?? baseline,
     baseline,
   }));
+}
+
+function chartStatus(health: number, index: number): SensorChart['status'] {
+  if (health >= 80) return index % 5 === 0 ? 'yellow' : 'green';
+  if (health >= 60) return index % 3 === 0 ? 'red' : 'yellow';
+  return index % 2 === 0 ? 'red' : 'yellow';
+}
+
+function buildDetailKpis(equipment: Equipment): EquipmentDetailKpis {
+  const health = equipment.overallHealth;
+  return {
+    operatingTimeDays: equipment.operatingTimeDays,
+    mtbfDays: equipment.mtbfDays,
+    availability: equipment.availability,
+    daysSinceLastFailure: equipment.daysSinceLastFailure,
+    lastFailureDate: equipment.daysSinceLastFailure > 30 ? '04/02/2024' : '05/10/2024',
+    mttrDays: health < 60 ? 2.1 : health < 80 ? 1.5 : 0.85,
+    failureRatePerMonth: Math.round(Math.max(0.05, (100 - health) / 150) * 1000) / 1000,
+    failureProbability30Days: Math.round(Math.max(8, Math.min(92, 110 - health)) * 10) / 10,
+    overallHealth: equipment.overallHealth,
+  };
+}
+
+const TURBINE_SENSOR_SPECS: Array<{ id: string; title: string; values: number[]; baseline: number }> = [
+  { id: 'inlet-pressure', title: 'Inlet Stem Pressure', values: [42, 44, 41, 43, 45, 44, 42], baseline: 43 },
+  { id: 'outlet-pressure', title: 'Outlet Stem Pressure', values: [38, 39, 37, 40, 41, 39, 38], baseline: 39 },
+  { id: 'bearing-temp', title: 'Bearing Temperature', values: [72, 74, 76, 78, 77, 75, 73], baseline: 74 },
+  { id: 'x-vibration', title: 'X-Axis Vibration', values: [5.2, 5.4, 5.6, 5.5, 5.3, 5.1, 5.0], baseline: 5.2 },
+  { id: 'y-vibration', title: 'Y-Axis Vibration', values: [3.1, 3.2, 3.0, 3.3, 3.2, 3.1, 3.0], baseline: 3.1 },
+  { id: 'z-vibration', title: 'Z-Axis Vibration', values: [2.8, 2.9, 2.7, 2.9, 2.8, 2.7, 2.6], baseline: 2.8 },
+  { id: 'inlet-flow', title: 'Inlet Stem Flow', values: [120, 122, 121, 123, 124, 122, 121], baseline: 122 },
+  { id: 'outlet-flow', title: 'Outlet Stem Flow', values: [118, 119, 117, 120, 121, 119, 118], baseline: 119 },
+  { id: 'casing-temp', title: 'Casing Temperature', values: [65, 66, 67, 68, 67, 66, 65], baseline: 66 },
+];
+
+const PUMP_SENSOR_SPECS: Array<{ id: string; title: string; values: number[]; baseline: number }> = [
+  { id: 'suction-pressure', title: 'Suction Pressure', values: [28, 29, 27, 30, 29, 28, 27], baseline: 28 },
+  { id: 'discharge-pressure', title: 'Discharge Pressure', values: [52, 54, 51, 53, 55, 54, 52], baseline: 53 },
+  { id: 'motor-temp', title: 'Motor Temperature', values: [48, 49, 47, 50, 49, 48, 47], baseline: 48 },
+  { id: 'bearing-temp', title: 'Bearing Temperature', values: [55, 56, 54, 57, 56, 55, 54], baseline: 55 },
+  { id: 'vibration', title: 'Vibration', values: [2.1, 2.2, 2.0, 2.3, 2.1, 2.0, 1.9], baseline: 2.1 },
+  { id: 'flow-rate', title: 'Flow Rate', values: [95, 97, 94, 98, 96, 95, 94], baseline: 96 },
+  { id: 'motor-current', title: 'Motor Current', values: [42, 43, 41, 44, 43, 42, 41], baseline: 42 },
+  { id: 'seal-temp', title: 'Seal Temperature', values: [38, 39, 37, 40, 39, 38, 37], baseline: 38 },
+  { id: 'npsh', title: 'NPSH Margin', values: [12, 13, 11, 14, 12, 11, 10], baseline: 12 },
+];
+
+function buildSensorCharts(equipment: Equipment): SensorChart[] {
+  const specs = equipment.equipmentType === 'Pump' ? PUMP_SENSOR_SPECS : TURBINE_SENSOR_SPECS;
+  const prefix = equipment.equipmentId.replace(/\s+/g, '-').toLowerCase();
+
+  return specs.map((spec, index) => ({
+    id: `${prefix}-${spec.id}`,
+    title: spec.title,
+    status: chartStatus(equipment.overallHealth, index),
+    data: sensorData(spec.values, spec.baseline),
+  }));
+}
+
+function buildDiagnostics(equipment: Equipment): DiagnosticCard[] {
+  const health = equipment.overallHealth;
+  const riskStatus = health >= 80 ? 'green' : health >= 60 ? 'yellow' : 'red';
+  const highRisk = health < 60;
+
+  return [
+    {
+      id: `${equipment.equipmentId}-bearing`,
+      title: 'Bearing Wear',
+      probability: highRisk ? 68 : health >= 80 ? 8 : 24,
+      status: highRisk ? 'red' : health >= 80 ? 'green' : 'yellow',
+      factors: [
+        { label: 'Vibration', percent: highRisk ? 72 : 15, status: highRisk ? 'red' : 'green' },
+        { label: 'Bearing Temp', percent: highRisk ? 55 : 10, status: highRisk ? 'yellow' : 'green' },
+      ],
+    },
+    {
+      id: `${equipment.equipmentId}-seal`,
+      title: equipment.equipmentType === 'Pump' ? 'Seal Degradation' : 'Pressure Control System Failure',
+      probability: highRisk ? 75 : health >= 80 ? 12 : 38,
+      status: riskStatus,
+      factors: [
+        {
+          label: equipment.equipmentType === 'Pump' ? 'Discharge Pressure' : 'Inlet Stem Pressure',
+          percent: highRisk ? 65 : 20,
+          status: highRisk ? 'red' : 'yellow',
+        },
+        {
+          label: equipment.equipmentType === 'Pump' ? 'Suction Pressure' : 'Outlet Stem Pressure',
+          percent: highRisk ? 48 : 15,
+          status: highRisk ? 'yellow' : 'green',
+        },
+      ],
+    },
+    {
+      id: `${equipment.equipmentId}-motor`,
+      title: equipment.equipmentType === 'Pump' ? 'Motor Overload' : 'Overheating',
+      probability: highRisk ? 82 : health >= 80 ? 5 : 42,
+      status: highRisk ? 'red' : health >= 80 ? 'green' : 'yellow',
+      factors: [
+        {
+          label: equipment.equipmentType === 'Pump' ? 'Motor Current' : 'Bearing Temperature',
+          percent: highRisk ? 88 : 12,
+          status: highRisk ? 'red' : 'green',
+        },
+        {
+          label: equipment.equipmentType === 'Pump' ? 'Motor Temperature' : 'Casing Temperature',
+          percent: highRisk ? 70 : 18,
+          status: highRisk ? 'yellow' : 'green',
+        },
+      ],
+    },
+  ];
+}
+
+/** Build a full equipment detail payload for any mock equipment row. */
+export function buildEquipmentDetail(equipment: Equipment): EquipmentDetail {
+  return {
+    equipment,
+    kpis: buildDetailKpis(equipment),
+    sensorCharts: buildSensorCharts(equipment),
+    diagnostics: buildDiagnostics(equipment),
+  };
 }
 
 export const MOCK_TURBINE_1_DETAIL: EquipmentDetail = {

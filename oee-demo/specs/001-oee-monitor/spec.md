@@ -22,6 +22,7 @@ Build an OEE Monitor web application for a nitric acid production plant. The app
 - Breadcrumb navigation.
 - Light and dark theme toggle.
 - Details action for each equipment item.
+- Atlas AI chat assistant for OEE-related Q&A. Users can ask questions about overall OEE, availability, performance, quality, production losses, and individual equipment; the agent answers using the same OEE metrics service that drives the dashboard.
 
 ### Out of Scope
 
@@ -97,6 +98,16 @@ Build an OEE Monitor web application for a nitric acid production plant. The app
 
 - **FR-029**: The system shall support light and dark theme mode.
 - **FR-030**: The current theme shall be visually indicated by an icon toggle.
+
+### Atlas Chat Assistant
+
+- **FR-031**: The system shall expose a floating chat button (Atlas FAB) on every OEE screen — dashboard, equipment list, and equipment details — when an Atlas agent has been configured.
+- **FR-032**: The chat button shall toggle a right-side slide-over panel containing a message list, a textarea input, and suggested prompts.
+- **FR-033**: The chat panel shall be hidden when `VITE_ATLAS_AGENT_EXTERNAL_ID` is empty, so the demo runs without an Atlas agent.
+- **FR-034**: User messages shall be sent to the configured Atlas agent, and assistant responses shall stream into the panel.
+- **FR-035**: The agent shall receive the current view as `appContext` (current `page`, `areaName`, `equipmentType`, `equipmentId`, and `theme`) so it can interpret references such as "this equipment" or "this area".
+- **FR-036**: The agent shall be able to query the dashboard KPIs, monthly loss breakdown, area availability health, production losses by section, production trends + area rates, quality trends + area parameters, equipment lists, and equipment detail through client tools that delegate to the OEE metrics service.
+- **FR-037**: Tool invocations shall surface a progress indicator (e.g. `Executing: get_oee_dashboard`) while running, and the user shall be able to stop a streaming response or start a new conversation from the panel.
 
 ## Data Requirements
 
@@ -186,6 +197,18 @@ Given the user is on the equipment list page, when the user selects `DETAILS` on
 ### AC-008: Theme Toggle
 
 Given the user toggles the theme icon, when the theme changes, then the UI colors update while preserving all displayed data and layout.
+
+### AC-009: Atlas Chat FAB Visibility
+
+Given the user opens the app, when `VITE_ATLAS_AGENT_EXTERNAL_ID` is empty, then no chat FAB is rendered. When the variable is set to a valid agent external ID, then the FAB is visible on the dashboard, equipment list, and equipment details pages.
+
+### AC-010: Atlas Answers from OEE Data
+
+Given the user is on the dashboard and asks "What is the daily forecast vs target?", when the Atlas agent invokes `get_oee_dashboard`, then the assistant reply cites the same values shown on the daily strip (e.g. 937 tons forecast vs 1100 tons target from mock data).
+
+### AC-011: Atlas Uses View Context
+
+Given the user navigates to the Turbine 1 details page and asks "Summarize this equipment", when the assistant streams a reply, then the response is scoped to Turbine 1 because `appContext` carries `page=equipment-details` and `equipmentId=Turbine 1`.
 
 ## Initial Mock Data
 

@@ -1,5 +1,4 @@
-import { Fragment } from 'react';
-
+import { OeeCard } from '@/components/oee/OeeCard';
 import { cn } from '@/lib/utils';
 import type { DashboardKpis } from '@/types/oee';
 
@@ -26,10 +25,10 @@ export function DailyStatusBar({ kpis }: DailyStatusBarProps) {
   ];
 
   return (
-    <div className="grid grid-cols-1 items-center gap-1 rounded-2xl bg-card px-4 py-3 shadow-sm sm:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]">
-      {items.map((item, index) => (
-        <Fragment key={item.label}>
-          <div className="flex items-baseline justify-between gap-3 px-2">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {items.map((item) => (
+        <OeeCard key={item.label} padding="sm">
+          <div className="flex items-baseline justify-between gap-3">
             <p className="text-sm text-muted-foreground">{item.label}</p>
             <p className="flex items-baseline gap-1">
               <span
@@ -45,8 +44,7 @@ export function DailyStatusBar({ kpis }: DailyStatusBarProps) {
               ) : null}
             </p>
           </div>
-          {index < items.length - 1 ? <div className="hidden h-8 w-px bg-border sm:block" /> : null}
-        </Fragment>
+        </OeeCard>
       ))}
     </div>
   );

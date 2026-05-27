@@ -61,10 +61,17 @@ describe('App', () => {
   it('renders OEE dashboard after host connects', async () => {
     renderApp(<App deps={makeConnectedDeps()} />);
     await waitFor(() => expect(screen.getByText('OEE MONITOR')).toBeInTheDocument());
-    expect(screen.getByRole('heading', { name: 'Availability & Health' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Availability.*Health/i })).toBeInTheDocument();
     expect(screen.getByText('Daily Production')).toBeInTheDocument();
-    expect(screen.getByText('Availability & Health')).toBeInTheDocument();
     expect(screen.getByText('In Production')).toBeInTheDocument();
     expect(screen.getByText('54%')).toBeInTheDocument();
+  });
+
+  it('hides the Atlas chat FAB when VITE_ATLAS_AGENT_EXTERNAL_ID is empty', async () => {
+    renderApp(<App deps={makeConnectedDeps()} />);
+    await waitFor(() => expect(screen.getByText('OEE MONITOR')).toBeInTheDocument());
+    expect(
+      screen.queryByRole('button', { name: /Atlas chat/i }),
+    ).not.toBeInTheDocument();
   });
 });

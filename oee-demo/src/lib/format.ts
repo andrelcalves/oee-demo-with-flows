@@ -2,6 +2,15 @@ export function formatPercent(value: number): string {
   return `${Math.round(value)}%`;
 }
 
+export function formatPercentOneDecimal(value: number): string {
+  const rounded = Math.round(value * 10) / 10;
+  return Number.isInteger(rounded) ? `${rounded}%` : `${rounded.toFixed(1)}%`;
+}
+
+export function formatDecimal(value: number, fractionDigits = 2): string {
+  return value.toFixed(fractionDigits);
+}
+
 export function formatTons(value: number): string {
   return `${value.toLocaleString()} t`;
 }

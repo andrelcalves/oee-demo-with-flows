@@ -1,3 +1,4 @@
+import { OeeCard } from '@/components/oee/OeeCard';
 import { OeeGauge } from '@/components/oee/OeeGauge';
 import { cn } from '@/lib/utils';
 import type { DiagnosticCard as DiagnosticCardType } from '@/types/oee';
@@ -14,33 +15,43 @@ const STATUS_TEXT = {
 } as const;
 
 export function DiagnosticCard({ diagnostic, compact = false }: DiagnosticCardProps) {
-  if (!compact) {
+  if (compact) {
     return (
-      <div className="rounded-lg border border-border bg-card p-3">
-        <div className="mb-2 flex items-center justify-between gap-2">
-          <p className="text-sm font-medium leading-tight">{diagnostic.title}</p>
-          <OeeGauge value={diagnostic.probability} size="sm" variant="performance" />
-        </div>
-        <ul className="flex flex-col gap-1 text-xs">
-          {diagnostic.factors.map((factor) => (
-            <li key={factor.label} className="flex justify-between gap-2">
-              <span className="text-muted-foreground">{factor.label}</span>
-              <span className={cn('font-medium', STATUS_TEXT[factor.status])}>
-                {factor.percent}%
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <OeeCard padding="sm">
+        <p className="text-xs font-medium">{diagnostic.title}</p>
+        <p className={cn('text-lg font-semibold', STATUS_TEXT[diagnostic.status])}>
+          {diagnostic.probability}%
+        </p>
+      </OeeCard>
     );
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card p-2">
-      <p className="text-xs font-medium">{diagnostic.title}</p>
-      <p className={cn('text-lg font-semibold', STATUS_TEXT[diagnostic.status])}>
-        {diagnostic.probability}%
-      </p>
-    </div>
+    <OeeCard padding="sm">
+      <div className="flex gap-3">
+        <div className="shrink-0">
+          <OeeGauge
+            value={diagnostic.probability}
+            size="sm"
+            variant="neutral"
+            colorByValue
+            ariaLabel={`${diagnostic.title} probability`}
+          />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="mb-2 text-sm font-medium leading-tight">{diagnostic.title}</p>
+          <ul className="flex flex-col gap-1 text-xs">
+            {diagnostic.factors.map((factor) => (
+              <li key={factor.label} className="flex justify-between gap-2">
+                <span className="text-[color:var(--oee-purple-500)]">{factor.label}</span>
+                <span className={cn('shrink-0 font-medium tabular-nums', STATUS_TEXT[factor.status])}>
+                  {factor.percent}%
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </OeeCard>
   );
 }
