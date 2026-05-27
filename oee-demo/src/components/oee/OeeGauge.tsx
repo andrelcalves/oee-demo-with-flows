@@ -1,48 +1,80 @@
+import { cn } from '@/lib/utils';
 import { formatPercent } from '@/lib/format';
+
+type GaugeVariant = 'hero' | 'availability' | 'performance' | 'quality' | 'neutral';
 
 type OeeGaugeProps = {
   value: number;
-  label?: string;
+  ariaLabel?: string;
+  size?: 'lg' | 'md' | 'sm';
+  variant?: GaugeVariant;
+  thickness?: number;
 };
 
-export function OeeGauge({ value, label = 'Overall OEE' }: OeeGaugeProps) {
+const SIZE_CONFIG = {
+  lg: { dim: 160, valueClass: 'text-3xl' },
+  md: { dim: 110, valueClass: 'text-xl' },
+  sm: { dim: 72, valueClass: 'text-sm' },
+} as const;
+
+const VARIANT_STROKE: Record<GaugeVariant, string> = {
+  hero: 'var(--oee-purple-700)',
+  availability: 'var(--oee-purple-300)',
+  performance: 'var(--oee-purple-500)',
+  quality: 'var(--oee-purple-700)',
+  neutral: 'var(--oee-purple-500)',
+};
+
+export function OeeGauge({
+  value,
+  ariaLabel,
+  size = 'lg',
+  variant = 'hero',
+  thickness,
+}: OeeGaugeProps) {
   const clamped = Math.min(100, Math.max(0, value));
-  const radius = 54;
+  const config = SIZE_CONFIG[size];
+  const stroke = thickness ?? (size === 'lg' ? 14 : size === 'md' ? 10 : 8);
+  const radius = (config.dim - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (clamped / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center gap-2" aria-label={`${label} ${formatPercent(clamped)}`}>
-      <svg width="140" height="140" viewBox="0 0 140 140" role="img">
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: config.dim, height: config.dim }}
+      aria-label={ariaLabel ?? `${formatPercent(clamped)}`}
+    >
+      <svg width={config.dim} height={config.dim} viewBox={`0 0 ${config.dim} ${config.dim}`} role="img">
         <circle
-          cx="70"
-          cy="70"
+          cx={config.dim / 2}
+          cy={config.dim / 2}
           r={radius}
           fill="none"
-          stroke="currentColor"
-          strokeWidth="12"
-          className="text-muted"
+          stroke="var(--oee-track)"
+          strokeWidth={stroke}
         />
         <circle
-          cx="70"
-          cy="70"
+          cx={config.dim / 2}
+          cy={config.dim / 2}
           r={radius}
           fill="none"
-          stroke="currentColor"
-          strokeWidth="12"
+          stroke={VARIANT_STROKE[variant]}
+          strokeWidth={stroke}
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          transform="rotate(-90 70 70)"
-          className="text-primary"
+          transform={`rotate(-90 ${config.dim / 2} ${config.dim / 2})`}
         />
-        <text x="70" y="68" textAnchor="middle" className="fill-foreground text-2xl font-semibold">
-          {formatPercent(clamped)}
-        </text>
-        <text x="70" y="88" textAnchor="middle" className="fill-muted-foreground text-xs">
-          {label}
-        </text>
       </svg>
+      <span
+        className={cn(
+          'absolute font-semibold text-foreground',
+          config.valueClass
+        )}
+      >
+        {formatPercent(clamped)}
+      </span>
     </div>
   );
 }

@@ -68,6 +68,15 @@ US2 depends on US1 (shared AppState, service, breadcrumbs)
 US3 can run after Phase 2
 ```
 
+## Phase 7: Prototype UI alignment (design/)
+
+- [x] T029 Document UI Reference in spec.md and research.md
+- [x] T030 Extend types and mock data for prototype screens
+- [x] T031 Align OeeDashboardPage with design/OEE monitor prototypes
+- [x] T032 Align EquipmentListPage with design/Equipment list prototypes
+- [x] T033 Align EquipmentDetailsPage with design/Turbine 1 prototypes
+- [x] T034 Update tests and verify build
+
 ## MVP scope
 
-Phases 1–3 (through T018) deliver AC-001–AC-005.
+Phases 1–3 (through T018) deliver AC-001–AC-005. Phase 7 aligns UI to `design/` prototypes.

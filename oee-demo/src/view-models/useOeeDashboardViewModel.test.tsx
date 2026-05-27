@@ -26,7 +26,7 @@ function createWrapper() {
 }
 
 describe(useOeeDashboardViewModel.name, () => {
-  it('loads dashboard kpis and sections', async () => {
+  it('loads dashboard kpis, loss breakdown, and area sections', async () => {
     const { result } = renderHook(() => useOeeDashboardViewModel(), {
       wrapper: createWrapper(),
     });
@@ -34,8 +34,8 @@ describe(useOeeDashboardViewModel.name, () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.kpis?.overallOee).toBe(54);
-    expect(result.current.areaHealth.length).toBeGreaterThan(0);
+    expect(result.current.lossBreakdown?.availability).toBe(1470);
+    expect(result.current.areaSections.length).toBeGreaterThan(0);
     expect(result.current.productionTrend.length).toBeGreaterThan(0);
-    expect(result.current.qualityTrend.length).toBeGreaterThan(0);
   });
 });

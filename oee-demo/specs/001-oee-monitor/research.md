@@ -25,7 +25,10 @@
 | Monthly Production Loss unit | Tons (consistent with daily production fields) |
 | Data source | `MockOeeMetricsService` reading `src/data/mock-oee-data.ts` |
 | Warning / alarm colors | Aura semantic tokens: below-target forecast uses `text-destructive`; availability &lt; 50% uses muted destructive styling on progress bars |
-| Equipment Details page | Placeholder page showing equipment id, description, area, and back navigation (FR-028 / AC-007) |
+| Equipment Details page | Full Turbine 1 layout per `design/Turbine 1 - *.png` (mock sensors/diagnostics) |
+| Visual reference | `specs/001-oee-monitor/design/*.png` — prototype wins for layout and labels |
+| Plant status | `In Production` |
+| Equipment list columns | Operating Time, MTBF, Days Since Last Failure, Availability, Overall Health, Detail |
 
 ## Theme
 
@@ -38,3 +41,11 @@
 **Decision**: Static mock data for v1; React Query `staleTime` 5 minutes (existing `main.tsx` defaults). No polling.
 
 **Rationale**: Out of scope per spec (no real-time historian).
+
+## UI alignment (prototype v2)
+
+**Decision**: Match `design/` screenshots for dashboard, equipment list, and Turbine detail using Aura + Tailwind; purple accent via `text-primary` / chart strokes.
+
+**Charts added**: Recharts `PieChart` for monthly loss donut; existing line charts for production/quality/sensors.
+
+**Layout**: Full-width dashboard (`max-w-[1600px]`); equipment detail uses 2-column grid (charts + diagnostics sidebar).

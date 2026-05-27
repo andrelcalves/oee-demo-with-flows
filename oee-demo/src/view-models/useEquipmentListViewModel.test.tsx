@@ -26,15 +26,15 @@ function createWrapper() {
 }
 
 describe(useEquipmentListViewModel.name, () => {
-  it('loads equipment for Pre Reaction / Pump', async () => {
+  it('loads equipment for Pre Reaction / Turbine', async () => {
     const { result } = renderHook(
-      () => useEquipmentListViewModel('Pre Reaction', 'Pump'),
+      () => useEquipmentListViewModel('Pre Reaction', 'Turbine'),
       { wrapper: createWrapper() }
     );
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.equipment).toHaveLength(2);
-    expect(result.current.equipment[0]?.equipmentId).toBe('Pump-101A');
+    expect(result.current.equipment[0]?.equipmentId).toBe('Turbine 1');
   });
 });

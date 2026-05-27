@@ -202,9 +202,42 @@ Given the user toggles the theme icon, when the theme changes, then the UI color
   - Pump-101A: Feed Transfer Pump A for pre-reaction, Availability 100%, Quality 89%.
   - Pump-101B: Feed Transfer Pump B for pre-reaction, Availability 0%, Quality 78%.
 
+## UI Reference (prototype)
+
+Visual source of truth: [`design/`](design/). Prototype wins over earlier simplified layouts.
+
+| Screen | Light | Dark | Notes |
+|--------|-------|------|-------|
+| Dashboard | [OEE monitor - light.png](design/OEE%20monitor%20-%20light.png) | [OEE monitor - dark.png](design/OEE%20monitor%20-%20dark.png) | KPI row, donut loss, three columns |
+| Equipment list | [Equipment list-light.png](design/Equipment%20list-light.png) | [Equipment list - dark.png](design/Equipment%20list%20-%20dark.png) | MTBF, operating time, overall health |
+| Equipment detail | [Turbine 1 - light.png](design/Turbine%201%20-%20light.png) | [Turbine 1 - dark.png](design/Turbine%201%20-%20dark.png) | Sensor grid + diagnostics sidebar |
+
+### Dashboard (from prototype)
+
+- Header: `OEE MONITOR`, optional status widget (weather/time), theme toggle.
+- KPI row: large Overall OEE gauge; Availability / Performance / Quality pillar gauges; monthly loss **donut** (Availability, Performance, Quality segments).
+- Daily strip: Daily Production, Daily Target, Daily Forecast, Plant Status (`In Production`).
+- Three columns: **Availability & Health** (areas with equipment lines and x/y counts), **Performance** (line chart, T/D rates, loss bars), **Quality** (concentration chart, area %, loss bars).
+
+### Equipment list (from prototype)
+
+- Title: `OEE MONITOR / Equipment`.
+- Columns: Equipment, Operating Time, MTBF, Days Since Last Failure, Availability (bar), Overall Health (bar), Detail button.
+- Example: Turbine 1 (98% / 57%), Turbine 2 (91% / 32%).
+
+### Equipment detail (from prototype)
+
+- Title: `OEE MONITOR / Equipment / {name}` (e.g. Turbine 1).
+- KPI tiles: operating time, MTBF, availability, failure metrics.
+- Grid of sensor trend charts; sidebar with overall health gauge and diagnostic cards.
+
+## Resolved (v2 from prototype)
+
+- Monthly Production Loss breakdown: tons; donut shows Availability / Performance / Quality segments.
+- Equipment Details: full diagnostic layout per Turbine 1 prototype (mock sensor data for v1).
+- Plant status label: `In Production`.
+- Warning colors: green / yellow / red status dots on charts and diagnostics.
+
 ## Open Questions
 
-- Should the Monthly Production Loss value represent tons, hours, or another unit?
 - What historian/API will provide live production, equipment, and quality data?
-- What threshold should determine warning, alarm, and critical colors?
-- What should the equipment Details page contain?

@@ -1,18 +1,17 @@
 import { Alert, AlertDescription, Loader } from '@cognite/aura/components';
 
-import { Breadcrumbs } from '@/components/oee/Breadcrumbs';
-import { ThemeToggle } from '@/components/oee/ThemeToggle';
 import { EquipmentTable } from '@/components/equipment/EquipmentTable';
+import { OeePageHeader } from '@/components/oee/OeePageHeader';
 import { useAppState } from '@/state/AppStateProvider';
 import { useEquipmentListViewModel } from '@/view-models/useEquipmentListViewModel';
 
 export function EquipmentListPage() {
   const { state, navigateToDashboard, navigateToEquipmentDetails } = useAppState();
-  const areaName = state.areaName ?? '';
-  const equipmentType = state.equipmentType ?? '';
+  const areaName = state.areaName ?? 'Pre Reaction';
+  const equipmentType = state.equipmentType ?? 'Turbine';
   const vm = useEquipmentListViewModel(areaName, equipmentType);
 
-  const title = `${areaName} / ${equipmentType}`;
+  const listLabel = equipmentType === 'Turbine' ? 'Equipment' : `${areaName} / ${equipmentType}`;
 
   if (vm.isLoading) {
     return (
@@ -31,20 +30,15 @@ export function EquipmentListPage() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:p-8">
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold tracking-wide">OEE MONITOR - {title}</h1>
-          <Breadcrumbs
-            crumbs={[
-              { label: 'Home' },
-              { label: 'Oee Monitor', onClick: () => void navigateToDashboard() },
-              { label: title },
-            ]}
-          />
-        </div>
-        <ThemeToggle />
-      </header>
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 p-4 md:p-8">
+      <OeePageHeader
+        title={`OEE MONITOR / ${listLabel}`}
+        crumbs={[
+          { label: 'Home' },
+          { label: 'Oee Monitor', onClick: () => void navigateToDashboard() },
+          { label: listLabel },
+        ]}
+      />
 
       <EquipmentTable
         equipment={vm.equipment}

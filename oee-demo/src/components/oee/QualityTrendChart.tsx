@@ -1,8 +1,9 @@
 import {
+  Area,
   CartesianGrid,
-  Legend,
+  ComposedChart,
   Line,
-  LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -23,39 +24,43 @@ export function QualityTrendChart({ data }: QualityTrendChartProps) {
   }));
 
   return (
-    <div className="h-64 w-full" aria-label="Nitric acid concentration trend chart">
+    <div className="h-44 w-full" aria-label="Nitric acid concentration trend chart">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-          <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} domain={['auto', 'auto']} />
+        <ComposedChart data={chartData} margin={{ top: 4, right: 12, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--oee-track)" />
+          <XAxis dataKey="label" tick={{ fontSize: 10 }} stroke="currentColor" opacity={0.5} />
+          <YAxis
+            tick={{ fontSize: 10 }}
+            stroke="currentColor"
+            opacity={0.5}
+            domain={['auto', 'auto']}
+          />
           <Tooltip />
-          <Legend />
+          <Area
+            type="monotone"
+            dataKey="concentration"
+            fill="var(--oee-purple-300)"
+            stroke="none"
+            fillOpacity={0.45}
+          />
           <Line
             type="monotone"
             dataKey="concentration"
-            name="Concentration"
-            stroke="hsl(var(--primary))"
+            stroke="var(--oee-purple-700)"
             strokeWidth={2}
             dot={false}
           />
-          <Line
-            type="monotone"
-            dataKey="hiHiLimit"
-            name="HiHi"
-            stroke="hsl(var(--destructive))"
+          <ReferenceLine
+            y={chartData[0]?.hiHiLimit}
+            stroke="var(--oee-red)"
             strokeDasharray="4 4"
-            dot={false}
           />
-          <Line
-            type="monotone"
-            dataKey="loLoLimit"
-            name="LoLo"
-            stroke="hsl(var(--destructive))"
-            strokeDasharray="2 6"
-            dot={false}
+          <ReferenceLine
+            y={chartData[0]?.loLoLimit}
+            stroke="var(--oee-amber)"
+            strokeDasharray="4 4"
           />
-        </LineChart>
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

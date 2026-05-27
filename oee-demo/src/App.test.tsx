@@ -63,7 +63,8 @@ describe('App', () => {
     await waitFor(() => expect(screen.getByText('OEE MONITOR')).toBeInTheDocument());
     expect(screen.getByRole('heading', { name: 'Availability & Health' })).toBeInTheDocument();
     expect(screen.getByText('Daily Production')).toBeInTheDocument();
-    expect(screen.getByText('Pre Reaction / Pump')).toBeInTheDocument();
+    expect(screen.getByText('Availability & Health')).toBeInTheDocument();
+    expect(screen.getByText('In Production')).toBeInTheDocument();
     expect(screen.getByText('54%')).toBeInTheDocument();
   });
 });

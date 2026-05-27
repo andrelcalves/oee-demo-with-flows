@@ -24,8 +24,8 @@ Open https://localhost:3001 (mkcert HTTPS).
 | AC-003 | Availability section lists areas with equipment types and availability % |
 | AC-004 | Performance chart shows production series and reference values |
 | AC-005 | Quality chart shows concentration and HiHi/LoLo lines |
-| AC-006 | Click `Pre Reaction / Pump` → list shows Pump-101A and Pump-101B |
-| AC-007 | Click `DETAILS` on a row → placeholder details page |
+| AC-006 | Click `Turbine` under Pre Reaction → equipment list shows Turbine 1 and Turbine 2 |
+| AC-007 | Click `Detail` on Turbine 1 → sensor grid and diagnostics sidebar |
 | AC-008 | Theme toggle switches light/dark; layout preserved |
 
 ## Tests

@@ -1,9 +1,11 @@
 import type {
-  AreaHealthGroup,
   AreaMetric,
+  AreaSection,
   DashboardKpis,
   Equipment,
+  EquipmentDetail,
   LossSection,
+  MonthlyLossBreakdown,
   ProductionLoss,
   ProductionTrendPoint,
   QualityTrendPoint,
@@ -11,7 +13,8 @@ import type {
 
 export interface OeeMetricsService {
   getDashboardKpis(): Promise<DashboardKpis>;
-  getAreaHealthGroups(): Promise<AreaHealthGroup[]>;
+  getMonthlyLossBreakdown(): Promise<MonthlyLossBreakdown>;
+  getAreaSections(): Promise<AreaSection[]>;
   getProductionLosses(section: LossSection): Promise<ProductionLoss[]>;
   getProductionTrend(): Promise<ProductionTrendPoint[]>;
   getAreaProductionRates(): Promise<AreaMetric[]>;
@@ -20,4 +23,5 @@ export interface OeeMetricsService {
   getAreaQualityParameters(): Promise<AreaMetric[]>;
   getEquipment(areaName: string, equipmentType: string): Promise<Equipment[]>;
   getEquipmentById(equipmentId: string): Promise<Equipment | undefined>;
+  getEquipmentDetail(equipmentId: string): Promise<EquipmentDetail | undefined>;
 }

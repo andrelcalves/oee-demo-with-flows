@@ -1,8 +1,9 @@
 import {
+  Area,
   CartesianGrid,
-  Legend,
+  ComposedChart,
   Line,
-  LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -23,39 +24,38 @@ export function ProductionTrendChart({ data }: ProductionTrendChartProps) {
   }));
 
   return (
-    <div className="h-64 w-full" aria-label="Production trend chart">
+    <div className="h-44 w-full" aria-label="Production trend chart">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-          <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} />
+        <ComposedChart data={chartData} margin={{ top: 4, right: 12, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--oee-track)" />
+          <XAxis dataKey="label" tick={{ fontSize: 10 }} stroke="currentColor" opacity={0.5} />
+          <YAxis tick={{ fontSize: 10 }} stroke="currentColor" opacity={0.5} />
           <Tooltip />
-          <Legend />
+          <Area
+            type="monotone"
+            dataKey="averageHourlyProduction"
+            fill="var(--oee-purple-300)"
+            stroke="none"
+            fillOpacity={0.45}
+          />
           <Line
             type="monotone"
             dataKey="averageHourlyProduction"
-            name="Avg hourly"
-            stroke="hsl(var(--primary))"
+            stroke="var(--oee-red)"
             strokeWidth={2}
             dot={false}
           />
-          <Line
-            type="monotone"
-            dataKey="targetProduction"
-            name="Target"
-            stroke="hsl(var(--muted-foreground))"
+          <ReferenceLine
+            y={chartData[0]?.targetProduction}
+            stroke="var(--oee-blue)"
             strokeDasharray="4 4"
-            dot={false}
           />
-          <Line
-            type="monotone"
-            dataKey="maxProduction"
-            name="Max"
-            stroke="hsl(var(--destructive))"
+          <ReferenceLine
+            y={chartData[0]?.maxProduction}
+            stroke="var(--oee-purple-500)"
             strokeDasharray="2 6"
-            dot={false}
           />
-        </LineChart>
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );
