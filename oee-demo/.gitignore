@@ -4,6 +4,7 @@ node_modules
 # Build output
 dist
 coverage
+.cognite-bundles
 
 # Environment variables
 .env
