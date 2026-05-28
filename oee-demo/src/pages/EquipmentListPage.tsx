@@ -30,7 +30,7 @@ export function EquipmentListPage() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 p-4 md:p-8">
+    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-3 p-4 md:p-6">
       <OeePageHeader
         title={`OEE MONITOR / ${listLabel}`}
         crumbs={[

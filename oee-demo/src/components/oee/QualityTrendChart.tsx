@@ -10,15 +10,77 @@ import {
   YAxis,
 } from 'recharts';
 
-import { formatChartHour } from '@/lib/format';
+import { formatChartHour, formatDecimal } from '@/lib/format';
 import type { QualityTrendPoint } from '@/types/oee';
+
+type QualityChartPoint = QualityTrendPoint & { label: string };
 
 type QualityTrendChartProps = {
   data: QualityTrendPoint[];
 };
 
+type QualityTrendTooltipProps = {
+  active?: boolean;
+  payload?: ReadonlyArray<{ payload: QualityChartPoint }>;
+};
+
+const TOOLTIP_METRICS = [
+  {
+    label: 'Nitric Acid Concentration',
+    color: 'var(--oee-purple-700)',
+    getValue: (point: QualityChartPoint) => formatDecimal(point.concentration, 1),
+  },
+  {
+    label: 'HiHi',
+    color: 'var(--oee-red)',
+    getValue: (point: QualityChartPoint) => formatDecimal(point.hiHiLimit, 0),
+  },
+  {
+    label: 'LoLo',
+    color: 'var(--oee-amber)',
+    getValue: (point: QualityChartPoint) => formatDecimal(point.loLoLimit, 0),
+  },
+] as const;
+
+export function QualityTrendTooltip({ active, payload }: QualityTrendTooltipProps) {
+  if (!active || !payload?.length) {
+    return null;
+  }
+
+  const point = payload[0].payload;
+
+  return (
+    <div
+      className="rounded-lg border px-3 py-2 text-xs shadow-md"
+      style={{
+        background: 'var(--oee-card-bg)',
+        borderColor: 'var(--oee-card-border)',
+      }}
+    >
+      <p className="mb-2 font-medium text-foreground">{point.label}</p>
+      <ul className="flex flex-col gap-1.5">
+        {TOOLTIP_METRICS.map((metric) => (
+          <li key={metric.label} className="flex items-center justify-between gap-4">
+            <span className="flex items-center gap-1.5 text-muted-foreground">
+              <span
+                className="inline-block size-2 shrink-0 rounded-full"
+                style={{ background: metric.color }}
+                aria-hidden
+              />
+              {metric.label}
+            </span>
+            <span className="font-semibold tabular-nums text-foreground">
+              {metric.getValue(point)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function QualityTrendChart({ data }: QualityTrendChartProps) {
-  const chartData = data.map((point) => ({
+  const chartData: QualityChartPoint[] = data.map((point) => ({
     ...point,
     label: formatChartHour(point.timestamp),
   }));
@@ -67,7 +129,7 @@ export function QualityTrendChart({ data }: QualityTrendChartProps) {
               domain={yDomain}
               hide
             />
-            <Tooltip />
+            <Tooltip content={<QualityTrendTooltip />} />
             <Area
               type="monotone"
               dataKey="concentration"

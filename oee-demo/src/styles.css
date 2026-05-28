@@ -26,6 +26,12 @@
   --oee-card-border: rgba(15, 23, 42, 0.06);
   --oee-card-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
   --oee-column-bg: rgba(236, 236, 241, 0.65);
+  --oee-table-header-bg: #e8e4f0;
+  --oee-bar-track: #d4d4de;
+  --oee-bar-fill: #c4a4f5;
+  --oee-detail-btn-bg: #1e293b;
+  --oee-detail-btn-fg: #ffffff;
+  --oee-detail-btn-hover-bg: #334155;
 }
 
 .dark {
@@ -44,4 +50,19 @@
   --oee-card-border: rgba(255, 255, 255, 0.06);
   --oee-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   --oee-column-bg: rgba(42, 42, 53, 0.85);
+  --oee-table-header-bg: #3d3a2f;
+  --oee-bar-track: #2a2a35;
+  --oee-bar-fill: #c4a4f5;
+  --oee-detail-btn-bg: #f1f5f9;
+  --oee-detail-btn-fg: #0f172a;
+  --oee-detail-btn-hover-bg: #e2e8f0;
+}
+
+.oee-detail-btn {
+  background: var(--oee-detail-btn-bg);
+  color: var(--oee-detail-btn-fg);
+}
+
+.oee-detail-btn:hover {
+  background: var(--oee-detail-btn-hover-bg);
 }

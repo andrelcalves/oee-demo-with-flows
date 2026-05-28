@@ -1,6 +1,5 @@
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@cognite/aura/components';
-
 import { PercentBar } from '@/components/oee/PercentBar';
+import { OeeCard } from '@/components/oee/OeeCard';
 import type { Equipment } from '@/types/oee';
 
 type EquipmentTableProps = {
@@ -8,16 +7,30 @@ type EquipmentTableProps = {
   onDetails: (equipmentId: string) => void;
 };
 
+function EquipmentDetailButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button type="button" onClick={onClick} className="oee-detail-btn rounded-full px-4 py-1.5 text-xs font-medium">
+      Detail
+    </button>
+  );
+}
+
 export function EquipmentTable({ equipment, onDetails }: EquipmentTableProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Equipment list</CardTitle>
-      </CardHeader>
-      <CardContent className="overflow-x-auto p-0">
+    <OeeCard className="overflow-hidden !p-0">
+      <div className="border-b px-4 py-4" style={{ borderColor: 'var(--oee-card-border)' }}>
+        <h2 className="text-lg font-semibold">Equipment list</h2>
+      </div>
+      <div className="overflow-x-auto">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/40 text-muted-foreground">
+            <tr
+              className="text-foreground"
+              style={{
+                background: 'var(--oee-table-header-bg)',
+                borderBottom: '1px solid var(--oee-card-border)',
+              }}
+            >
               <th className="px-4 py-3 font-medium">Equipment</th>
               <th className="px-4 py-3 font-medium">Operating Time</th>
               <th className="px-4 py-3 font-medium">MTBF</th>
@@ -29,33 +42,42 @@ export function EquipmentTable({ equipment, onDetails }: EquipmentTableProps) {
           </thead>
           <tbody>
             {equipment.map((row) => (
-              <tr key={row.equipmentId} className="border-b border-border last:border-0">
+              <tr
+                key={row.equipmentId}
+                style={{ borderBottom: '1px solid var(--oee-card-border)' }}
+              >
                 <td className="px-4 py-4 font-medium">{row.equipmentId}</td>
                 <td className="px-4 py-4">{row.operatingTimeDays} days</td>
                 <td className="px-4 py-4">{row.mtbfDays} days</td>
                 <td className="px-4 py-4">{row.daysSinceLastFailure} days</td>
                 <td className="px-4 py-4">
-                  <PercentBar value={row.availability} label={`${row.equipmentId} availability`} />
+                  <PercentBar
+                    value={row.availability}
+                    label={`${row.equipmentId} availability`}
+                    variant="equipment"
+                    layout="inline"
+                  />
                 </td>
                 <td className="px-4 py-4">
-                  <PercentBar value={row.overallHealth} label={`${row.equipmentId} health`} />
+                  <PercentBar
+                    value={row.overallHealth}
+                    label={`${row.equipmentId} health`}
+                    variant="equipment"
+                    layout="inline"
+                  />
                 </td>
                 <td className="px-4 py-4">
-                  <Button
-                    className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900"
-                    size="sm"
+                  <EquipmentDetailButton
                     onClick={() => {
                       onDetails(row.equipmentId);
                     }}
-                  >
-                    Detail
-                  </Button>
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </CardContent>
-    </Card>
+      </div>
+    </OeeCard>
   );
 }
