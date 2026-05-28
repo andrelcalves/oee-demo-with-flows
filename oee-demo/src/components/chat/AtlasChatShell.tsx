@@ -10,6 +10,7 @@ import { AtlasChatPanel } from '@/components/chat/AtlasChatPanel';
 import { isAtlasConfigured } from '@/config/atlas';
 import {
   ATLAS_CHAT_SUGGESTIONS,
+  ATLAS_CHAT_WELCOME_TEXT,
   useAtlasChatViewModel,
   type UseAtlasChatViewModelDeps,
 } from '@/chat/useAtlasChatViewModel';
@@ -22,8 +23,7 @@ export type AtlasChatShellProps = {
 const PREVIEW_WELCOME_MESSAGE: ChatMessageVm = {
   id: 'atlas-preview-welcome',
   role: 'assistant',
-  text:
-    'Atlas AI will answer questions about overall OEE, equipment health, production trends, and production losses for this nitric-acid plant. Set VITE_ATLAS_AGENT_EXTERNAL_ID in .env to enable live chat.',
+  text: ATLAS_CHAT_WELCOME_TEXT,
 };
 
 /**

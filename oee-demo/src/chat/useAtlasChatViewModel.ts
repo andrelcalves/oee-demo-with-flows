@@ -30,11 +30,13 @@ export const ATLAS_CHAT_SUGGESTIONS = [
   'Summarize monthly production loss by section.',
 ] as const;
 
+export const ATLAS_CHAT_WELCOME_TEXT =
+  'Hi! I am Atlas. Ask me about overall OEE, equipment health, production trends, or production losses for the nitric-acid plant.';
+
 const WELCOME_MESSAGE: ChatMessage = {
   id: 'atlas-welcome',
   role: 'assistant',
-  text:
-    'Hi! I am Atlas. Ask me about overall OEE, equipment health, production trends, or production losses for the nitric-acid plant.',
+  text: ATLAS_CHAT_WELCOME_TEXT,
   timestamp: new Date(0),
 };
 
